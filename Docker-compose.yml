@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:15
+    container_name: blackout_finance_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER:  ${DB_USER}
+      POSTGRES_PASSWORD:  ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  backend:
+    build: 
+      context: ./BlackoutFinance_back
+      dockerfile: Dockerfile
+    container_name: blackout_finance_backend
+    restart: unless-stopped
+    env_file:
+     - .env
+    ports:
+     - "5000:5000"
+    depends_on:
+     - db
+  frontend: 
+    build:
+      context: ./Blackout_UI
+      dockerfile: Dockerfile
+    container_name: blackout_finance_frontend
+    restart: unless-stopped
+    env_file:
+      - ./Blackout_UI/.env
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
