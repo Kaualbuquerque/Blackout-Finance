@@ -1,5 +1,5 @@
 import { User } from '../models/user.js';
-import * as bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 // Função para cadastrar um novo usuário
