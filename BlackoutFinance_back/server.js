@@ -3,9 +3,12 @@ import authRoutes from "./src/routes/authRoutes.js";
 import expenseRoutes from "./src/routes/expenseRoutes.js";
 import incomeRoutes from "./src/routes/incomeRoutes.js";
 import financeRoutes from "./src/routes/financeRoutes.js";
+import healthRoutes from './src/routes/healthRoutes.js';
 
 import express from "express";
 import cors from "cors";
+import { swaggerSpec } from "./src/config/swagger.js";
+import swaggerUi from "swagger-ui-express";
 
 const app = express();
 
@@ -25,6 +28,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/expense", expenseRoutes);
 app.use("/api/income", incomeRoutes);
 app.use("/api/finance", financeRoutes);
+app.use('/api/health', healthRoutes);
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 
 // Função para iniciar a conexão com o banco e subir o servidor
 const startServer = async () => {

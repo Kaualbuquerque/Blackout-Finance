@@ -11,6 +11,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - blackout_net
   backend:
     build: 
       context: ./BlackoutFinance_back
@@ -23,6 +25,8 @@ services:
      - "5000:5000"
     depends_on:
      - db
+    networks:
+      - blackout_net
   frontend: 
     build:
       context: ./Blackout_UI
@@ -35,6 +39,11 @@ services:
       - "8080:80"
     depends_on:
       - backend
-
+    networks:
+      - blackout_net
 volumes:
   postgres_data:
+
+networks:
+  blackout_net:
+    external: true

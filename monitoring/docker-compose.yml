@@ -1,0 +1,79 @@
+services:
+  zabbix-db:
+    image: postgres:15
+    container_name: zabbix_db
+    environment:
+      POSTGRES_DB: zabbix
+      POSTGRES_USER: zabbix
+      POSTGRES_PASSWORD: zabbix
+    volumes:
+      - zabbix_db_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - blackout_net
+
+  zabbix-server:
+    image: zabbix/zabbix-server-pgsql:latest
+    container_name: zabbix_server
+    depends_on:
+      - zabbix-db
+    environment:
+      DB_SERVER_HOST: zabbix-db
+      POSTGRES_DB: zabbix
+      POSTGRES_USER: zabbix
+      POSTGRES_PASSWORD: zabbix
+      ZBX_TIMEOUT: 30
+    ports:
+      - "10051:10051"
+    restart: unless-stopped
+    networks:
+      - blackout_net
+
+  zabbix-web:
+    image: zabbix/zabbix-web-nginx-pgsql:latest
+    container_name: zabbix_web
+    depends_on:
+      - zabbix-server
+      - zabbix-db
+    environment:
+      DB_SERVER_HOST: zabbix-db
+      POSTGRES_DB: zabbix
+      POSTGRES_USER: zabbix
+      POSTGRES_PASSWORD: zabbix
+      ZBX_SERVER_HOST: zabbix-server
+    ports:
+      - "8081:8080"
+    restart: unless-stopped
+    networks:
+      - blackout_net
+
+  zabbix-agent2:
+    image: zabbix/zabbix-agent2:alpine-latest
+    container_name: zabbix_agent2
+    restart: unless-stopped
+    user: root
+    environment:
+      ZBX_SERVER_HOST: zabbix-server
+      ZBX_SERVER_ACTIVE: zabbix-server
+      ZBX_HOSTNAME: docker-host
+      ZBX_TIMEOUT: 30
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - blackout_net
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    networks:
+      - blackout_net
+
+volumes:
+  zabbix_db_data:
+
+networks:
+  blackout_net:
+    external: true
