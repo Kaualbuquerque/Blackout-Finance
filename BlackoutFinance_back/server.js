@@ -17,6 +17,7 @@ app.use(cors({
   origin: [
     'https://blackout-finance-ui.vercel.app',
     'http://localhost:8080',
+    `${process.env.CORS_ORIGIN}`,
   ], // link do front
   credentials: true
 }));
