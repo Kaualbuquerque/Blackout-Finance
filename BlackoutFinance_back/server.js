@@ -3,16 +3,23 @@ import authRoutes from "./src/routes/authRoutes.js";
 import expenseRoutes from "./src/routes/expenseRoutes.js";
 import incomeRoutes from "./src/routes/incomeRoutes.js";
 import financeRoutes from "./src/routes/financeRoutes.js";
+import healthRoutes from './src/routes/healthRoutes.js';
 
 import express from "express";
 import cors from "cors";
+import { swaggerSpec } from "./src/config/swagger.js";
+import swaggerUi from "swagger-ui-express";
 
 const app = express();
 
 // Middleware para permitir requisições de diferentes origens (CORS) e interpretar JSON
 app.use(cors({
-  origin: 'https://blackout-finance-ui.vercel.app', // link do front
-  credentials: true }));
+  origin: [
+    'https://blackout-finance-ui.vercel.app',
+    'http://localhost:8080',
+  ], // link do front
+  credentials: true
+}));
 
 app.use(express.json());
 
@@ -21,6 +28,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/expense", expenseRoutes);
 app.use("/api/income", incomeRoutes);
 app.use("/api/finance", financeRoutes);
+app.use('/api/health', healthRoutes);
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 
 // Função para iniciar a conexão com o banco e subir o servidor
 const startServer = async () => {
@@ -30,10 +40,10 @@ const startServer = async () => {
     console.log("Conexão com o banco de dados bem-sucedida!");
 
     // Garante que as tabelas estejam atualizadas
-    await sequelize.sync(); 
+    await sequelize.sync();
     console.log("Banco de dados sincronizado!");
 
-    const PORT = process.env.PORT || 5000;   
+    const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
       console.log(`Servidor rodando na porta ${PORT}`);
     });
