@@ -2,6 +2,7 @@
 	"info": {
 		"_postman_id": "0da80d61-0ed0-4e7f-8614-d386258d37b9",
 		"name": "Blackout Finance",
+		"description": "Esta documentação descreve a API do projeto **Blackout Finance**, contendo todos os endpoints disponíveis, seus métodos HTTP, parâmetros, exemplos de requisição e respostas esperadas.\n\nOs endpoints seguem o padrão REST, utilizam JSON como formato de troca de dados e exigem autenticação nos recursos protegidos. Para cada rota, estão especificados os headers necessários, payloads esperados e códigos de status retornados.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "29975020"
 	},
