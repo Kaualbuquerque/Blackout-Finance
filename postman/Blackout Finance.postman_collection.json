@@ -1,0 +1,409 @@
+{
+	"info": {
+		"_postman_id": "0da80d61-0ed0-4e7f-8614-d386258d37b9",
+		"name": "Blackout Finance",
+		"description": "Esta documentação descreve a API do projeto **Blackout Finance**, contendo todos os endpoints disponíveis, seus métodos HTTP, parâmetros, exemplos de requisição e respostas esperadas.\n\nOs endpoints seguem o padrão REST, utilizam JSON como formato de troca de dados e exigem autenticação nos recursos protegidos. Para cada rota, estão especificados os headers necessários, payloads esperados e códigos de status retornados.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29975020"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Usuário Teste\",\r\n  \"dateOfBirth\": \"2000-01-01\",\r\n  \"phoneNumber\": \"11999999999\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						},
+						"description": "Teste de registro de um usuário"
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Teste de login do usuário cadastrado"
+					},
+					"response": []
+				},
+				{
+					"name": "Register – erro de e-mail duplicado",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Usuário Teste\",\r\n  \"dateOfBirth\": \"2000-01-01\",\r\n  \"phoneNumber\": \"11999999999\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						},
+						"description": "Teste de erro para email já cadastrado"
+					},
+					"response": []
+				},
+				{
+					"name": "Login – senha incorreta",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"senha_errada\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Teste de erro de login com senha incorreta"
+					},
+					"response": []
+				},
+				{
+					"name": "Login – usuário inexistente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"inexistente@email.com\",\r\n  \"password\": \"123456\"\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Teste de erro de login com email não cadastrado | inexistente"
+					},
+					"response": []
+				}
+			],
+			"description": "Testes para autenticação de usuário"
+		},
+		{
+			"name": "Income",
+			"item": [
+				{
+					"name": "Create Income",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"value\": 3500,\r\n  \"category\": \"Salário\",\r\n  \"description\": \"Salário mensal\",\r\n  \"data\": \"2024-11-01\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/income/create",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"income",
+								"create"
+							]
+						},
+						"description": "Teste para adicionar uma nova renda"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Incomes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/income",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"income"
+							]
+						},
+						"description": "Teste para consultar todas as rendas do usuário"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Income",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/income/{{income_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"income",
+								"{{income_id}}"
+							]
+						},
+						"description": "Teste para fazer o delete de uma renda"
+					},
+					"response": []
+				}
+			],
+			"description": "Teste da rota Income (renda)"
+		},
+		{
+			"name": "Expense",
+			"item": [
+				{
+					"name": "Create Expense",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"value\": 120.50,\r\n  \"category\": \"Alimentação\",\r\n  \"description\": \"Almoço no restaurante\",\r\n  \"data\": \"2024-11-25\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/expense/create",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"expense",
+								"create"
+							]
+						},
+						"description": "Teste para adicionar uma nova despesa"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Expenses",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/expense",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"expense"
+							]
+						},
+						"description": "Teste para consultar todas as despesas do usuário"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Expense",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/expense/{{expense_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"expense",
+								"{{expense_id}}"
+							]
+						},
+						"description": "Teste para fazer o delete de uma despesa"
+					},
+					"response": []
+				}
+			],
+			"description": "Teste da rota Expense (despesas)"
+		},
+		{
+			"name": "Finance",
+			"item": [
+				{
+					"name": "Get Finance Totals",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/finance",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"finance"
+							]
+						},
+						"description": "Teste que retorna a soma das rendas e das despesas do usuário"
+					},
+					"response": []
+				}
+			],
+			"description": "Teste da rota de Finance"
+		}
+	]
+}
